@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproductor Musical Web</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="contenedor">
+    <header>
+      <h1>🎵 Reproductor Musical</h1>
+      <p>Proyecto de Reproductor Web</p>
+    </header>
+
+    <main>
+      <section class="reproductor">
+        <div class="pantalla-media" id="pantallaMedia">
+          <video id="media" playsinline></video>
+
+          <div class="portada" id="portada">
+            <div class="disco">♪</div>
+          </div>
+
+          <div class="mensaje-vacio" id="mensajeVacio">
+            <div class="nota-vacia">♪</div>
+            <p>Selecciona canciones o videos para comenzar</p>
+          </div>
+
+          <div class="controles-pantalla-completa">
+            <span id="tiempoActualFull">00:00</span>
+            <input type="range" id="barraProgresoFull" min="0" max="100" value="0" step="0.1">
+            <span id="duracionFull">00:00</span>
+          </div>
+        </div>
+
+        <div class="informacion">
+          <h2 id="tituloCancion">Ninguna canción</h2>
+          <p id="tipoArchivo">Selecciona una canción o video</p>
+        </div>
+
+        <div class="barra-tiempo">
+          <span id="tiempoActual">00:00</span>
+          <input type="range" id="barraProgreso" min="0" max="100" value="0" step="0.1">
+          <span id="duracion">00:00</span>
+        </div>
+
+        <div class="controles">
+          <button id="btnAleatorio" title="Aleatorio">🔀</button>
+          <button id="btnAnterior" title="Anterior">⏮</button>
+          <button id="btnReproducir" class="boton-play" title="Reproducir">▶</button>
+          <button id="btnSiguiente" title="Siguiente">⏭</button>
+          <button id="btnRepetir" title="Repetir">🔁</button>
+          <button id="btnPantallaCompleta" title="Pantalla completa">⛶</button>
+        </div>
+
+        <div class="volumen">
+          <button id="btnSilenciar" title="Silenciar">🔊</button>
+          <input type="range" id="volumen" min="0" max="1" step="0.01" value="0.8">
+        </div>
+      </section>
+
+      <section class="biblioteca">
+        <div class="encabezado-lista">
+          <div>
+            <h2>Mi biblioteca</h2>
+            <p id="contador">0 archivos</p>
+          </div>
+
+          <label for="selectorArchivos" class="boton-agregar">
+            + Agregar archivos
+          </label>
+
+          <input
+            type="file"
+            id="selectorArchivos"
+            accept="audio/*,video/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.mp4,.webm,.mov"
+            multiple
+          >
+        </div>
+
+        <div id="zonaArchivos" class="zona-archivos">
+          <p>Arrastra tus canciones o videos aquí</p>
+          <span>o utiliza el botón "Agregar archivos"</span>
+        </div>
+
+        <div class="titulo-cola">
+          <h3>Lista de reproducción</h3>
+          <button id="btnLimpiar">Limpiar cola</button>
+        </div>
+
+        <div id="listaCanciones" class="lista-canciones"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Proyecto de Reproductor Musical Web</p>
+      <p>HTML5 • CSS3 • JavaScript</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
