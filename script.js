@@ -26,6 +26,7 @@ const btnLimpiar = document.getElementById('btnLimpiar');
 
 let archivos = [];
 let indiceActual = -1;
+let indiceArrastrado = null;
 let aleatorioActivo = false;
 let repetirActivo = false;
 let ultimoVolumen = 0.8;
@@ -184,6 +185,16 @@ function quitarArchivo(indice) {
   actualizarContador();
 }
 
+function moverArchivo(indiceOrigen, indiceDestino) {
+  if (indiceOrigen === indiceDestino || indiceOrigen === null) return;
+
+  const archivoActual = archivos[indiceActual];
+  const [archivoMovido] = archivos.splice(indiceOrigen, 1);
+  archivos.splice(indiceDestino, 0, archivoMovido);
+  indiceActual = archivos.indexOf(archivoActual);
+  pintarLista();
+}
+
 function pintarLista() {
   listaCanciones.innerHTML = '';
 
@@ -198,6 +209,44 @@ function pintarLista() {
   archivos.forEach((item, indice) => {
     const fila = document.createElement('div');
     fila.className = `cancion${indice === indiceActual ? ' activa' : ''}`;
+    fila.draggable = true;
+    fila.dataset.indice = indice;
+
+    fila.addEventListener('dragstart', (evento) => {
+      indiceArrastrado = indice;
+      fila.classList.add('arrastrando');
+      evento.dataTransfer.effectAllowed = 'move';
+      evento.dataTransfer.setData('text/plain', indice.toString());
+    });
+
+    fila.addEventListener('dragover', (evento) => {
+      evento.preventDefault();
+      fila.classList.add('sobre');
+    });
+
+    fila.addEventListener('dragleave', () => {
+      fila.classList.remove('sobre');
+    });
+
+    fila.addEventListener('drop', (evento) => {
+      evento.preventDefault();
+      fila.classList.remove('sobre');
+      moverArchivo(indiceArrastrado, indice);
+    });
+
+    fila.addEventListener('dragend', () => {
+      indiceArrastrado = null;
+      document.querySelectorAll('.cancion').forEach((elemento) => {
+        elemento.classList.remove('arrastrando', 'sobre');
+      });
+    });
+
+    const mover = document.createElement('button');
+    mover.className = 'mover';
+    mover.type = 'button';
+    mover.title = 'Mover en la cola';
+    mover.setAttribute('aria-label', `Mover ${item.nombre}`);
+    mover.textContent = '☰';
 
     const icono = document.createElement('span');
     icono.className = 'icono-archivo';
@@ -226,7 +275,7 @@ function pintarLista() {
     quitar.textContent = '×';
     quitar.addEventListener('click', () => quitarArchivo(indice));
 
-    fila.append(icono, botonDatos, quitar);
+    fila.append(mover, icono, botonDatos, quitar);
     listaCanciones.appendChild(fila);
   });
 }
